@@ -8,8 +8,7 @@
   },
   "author": "Itsarawut",
   "license": "ISC",
-  "dependencies": {
-    "express": "^4.19.2"
+  "dependencies": { "express": "4.21.0"
   },
   "description": ""
 }
