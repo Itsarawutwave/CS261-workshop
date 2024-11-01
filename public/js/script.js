@@ -30,9 +30,6 @@ function submitLogin() {
         body: JSON.stringify({"UserName" : username,"PassWord" : password})
     })
     .then(response => {
-        if (!response.ok) {
-            throw new Error('Login failed. Invalid username or password.');
-    }
         return response.json();
     })
     .then(data => {
@@ -45,6 +42,8 @@ function submitLogin() {
         data.faculty;
     })
     .catch(error => {
-        console.error('Error:', error)
+        console.error('Error:', error);
+        document.getElementById('message').innerText = error;
+        document.getElementById('message').style.color = 'red';
     });
 }
