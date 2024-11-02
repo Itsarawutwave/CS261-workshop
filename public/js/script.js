@@ -3,19 +3,8 @@ function submitLogin() {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    if (!username && !password) {
-        document.getElementById('message').innerText = "Please enter your username & password";
-        document.getElementById('message').style.color = 'red';
-        return;
-    }
-    if (username.length !== 10 || !/^\d+$/.test(username)) {
-        document.getElementById('message').innerText = "Username must be tu account username 10 digits.";
-        document.getElementById('message').style.color = "red";
-        return;
-    }
-    if (password.length !== 13 || !/^\d+$/.test(password)) {
-        document.getElementById('message').innerText = "Password must be tu account password 13 digits.";
-        document.getElementById('message').style.color = "red";
+    
+    if(!validateUsername() || !validatePassword()) {
         return;
     }
 
@@ -30,6 +19,9 @@ function submitLogin() {
         body: JSON.stringify({"UserName" : username,"PassWord" : password})
     })
     .then(response => {
+        if (!response.ok) {
+            throw new Error('Login failed! Please check your username and password.');
+        }
         return response.json();
     })
     .then(data => {
@@ -46,4 +38,42 @@ function submitLogin() {
         document.getElementById('message').innerText = error;
         document.getElementById('message').style.color = 'red';
     });
+}
+
+function validateUsername() {
+    const username = document.getElementById('username').value;
+    const errorMessage = document.getElementById('error-message');
+    errorMessage.style.color = 'red';
+
+    if (!username.length > 0) {
+        errorMessage.innerText = 'กรุณากรอกชื่อผู้ใช้';
+        return false;
+    }
+    if (username.length < 10) {
+        errorMessage.innerText = 'ชื่อผู้ใช้ต้องมีความยาว 10 หลัก';
+        return false;
+    }
+    else{
+        errorMessage.innerText = '';
+        return true;
+    }
+}
+
+function validatePassword() {
+    const password = document.getElementById('password').value;
+    const errorMessage = document.getElementById('error-message');
+    errorMessage.style.color = 'red';
+
+    if (!password) {
+        errorMessage.innerText = 'กรุณากรอกรหัสผ่าน';
+        return false;
+    }
+    if (password.length < 3) {
+        errorMessage.innerText = 'รหัสผ่านต้องมีความยาวมากกว่า 3 ตัว';
+        return fasle;
+    }
+    else{
+        errorMessage.innerText = '';
+        return true;
+    }
 }
